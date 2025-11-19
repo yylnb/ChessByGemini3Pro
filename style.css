@@ -1,0 +1,286 @@
+:root {
+    --bg-color: #0f172a;
+    --text-color: #e2e8f0;
+    --accent-color: #38bdf8;
+    --accent-hover: #0ea5e9;
+    --board-light: #e2e8f0;
+    --board-dark: #475569;
+    --highlight-move: rgba(56, 189, 248, 0.5);
+    --highlight-check: rgba(239, 68, 68, 0.6);
+    --glass-bg: rgba(30, 41, 59, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: 
+        radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+        radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
+        radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+}
+
+.app-container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: 3rem;
+    font-weight: 600;
+    background: linear-gradient(to right, #38bdf8, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+}
+
+.game-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--glass-bg);
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(8px);
+    box-shadow: var(--shadow);
+}
+
+.turn-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.turn-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    transition: background-color 0.3s ease;
+}
+
+.turn-dot.black {
+    background-color: #1e293b;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.status-message {
+    height: 1.5rem;
+    color: #f43f5e;
+    font-weight: 600;
+}
+
+.board-wrapper {
+    position: relative;
+    padding: 1rem;
+    background: var(--glass-bg);
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--glass-border);
+}
+
+.chess-board {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    width: 80vmin;
+    max-width: 600px;
+    height: 80vmin;
+    max-height: 600px;
+    border: 4px solid #334155;
+}
+
+.square {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+}
+
+.square.light {
+    background-color: var(--board-light);
+    color: var(--board-dark);
+}
+
+.square.dark {
+    background-color: var(--board-dark);
+    color: var(--board-light);
+}
+
+.square.selected {
+    background-color: rgba(255, 255, 0, 0.5) !important;
+}
+
+.square.highlight {
+    position: relative;
+}
+
+.square.highlight::after {
+    content: '';
+    position: absolute;
+    width: 30%;
+    height: 30%;
+    background-color: var(--highlight-move);
+    border-radius: 50%;
+}
+
+.square.highlight:hover {
+    background-color: var(--highlight-move);
+}
+
+.square.check {
+    background-color: var(--highlight-check) !important;
+}
+
+.square.last-move {
+    background-color: rgba(255, 255, 0, 0.3);
+}
+
+.piece {
+    width: 90%;
+    height: 90%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: transform 0.2s ease;
+    user-select: none;
+}
+
+.piece:hover {
+    transform: scale(1.1);
+}
+
+.controls {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+}
+
+.btn.secondary {
+    background-color: #334155;
+    color: white;
+}
+
+.btn.secondary:hover {
+    background-color: #475569;
+}
+
+.btn.danger {
+    background-color: #ef4444;
+    color: white;
+}
+
+.btn.danger:hover {
+    background-color: #dc2626;
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: var(--glass-bg);
+    padding: 2rem;
+    border-radius: 1rem;
+    border: 1px solid var(--glass-border);
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+.promotion-options {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.promotion-piece {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+
+.promotion-piece:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.promotion-piece img {
+    width: 80%;
+    height: 80%;
+}
+
+@media (max-width: 600px) {
+    .chess-board {
+        width: 95vmin;
+        height: 95vmin;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+}
